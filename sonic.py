@@ -4,7 +4,12 @@ u3 = 200
 u4 = 300
 u5 = 500
 
-p1 = 0
+p1 = float(input("Enter how many rsr an average fast friend costs (above 0), or enter the TOTAL % Chance you have at getting any fast friend (below 0: 69% = 0.69): "))
+
+if p1<1:
+    p1 = 10 * (1 + p1)
+    
+
 p2 = 0
 p3 = 0
 p4 = 0
