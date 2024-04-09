@@ -35,8 +35,10 @@ print(" ")
 
 p1 = float(input("Enter how many RSR an average Fast Friend costs (above 0), or enter the TOTAL % Chance you have at getting any Fast Friend (below 0: 69% = 0.69): "))
 
-if p1<1:
+if p1<1 and p1!=0:
     p1 = 10 * (1 + p1)
+
+print(" ")
     
 p2 = 0
 p3 = 0
