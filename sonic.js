@@ -32,6 +32,7 @@ let p2 = 0;
 let p3 = 0;
 let p4 = 0;
 let p5 = 0;
+let p6 = 0;
 
 const u1 = 20;
 const u2 = 50;
@@ -108,6 +109,8 @@ function tierMatrix(p1, percentOrRSR, tier) {
         p4 = min;
     } else if (tier === 4) {
         p5 = min;
+    } else if (tier === 5) {
+        p6 = min;
     }
 }
 
@@ -178,12 +181,6 @@ function returnPrice(x, tier) {
     }
 }
 
-tierMatrix(u1, 1, weight1);
-tierMatrix(u2, 2, weight2);
-tierMatrix(u3, 3, weight3);
-tierMatrix(u4, 4, weight4);
-tierMatrix(u5, 5, weight5);
-
 $(document).ready(function() {
 	var i = 1;
 	var length = document.querySelectorAll('.FormulaTable').length;
@@ -212,7 +209,7 @@ $(document).ready(function() {
             j = 1;
             document.getElementById("Cost" + i + "-" + id).innerHTML = eval("p"+i+1);
             while(j<=5){
-                document.getElementById("FFs" + i + "_" + j + "-"+id).innerHTML = petList[j];
+                document.getElementById("FFs" + i + "_" + j + "-"+id).innerHTML = petList[j-1];
             }
         }	
     });
