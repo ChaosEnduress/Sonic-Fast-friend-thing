@@ -53,6 +53,8 @@ function tierMatrix(p1, percentOrRSR, tier) {
         p1 = 10 * (1 + p1/100);
     }    
 
+    petList = []
+
     eval("weight = weight" + tier);
     eval("u = u" + tier);
 
@@ -107,11 +109,6 @@ function tierMatrix(p1, percentOrRSR, tier) {
     } else if (tier === 4) {
         p5 = min;
     }
-    
-    for (let i = 0; i < petList.length; i++) {
-        console.log(`${petList[i]} star`);
-    }
-    console.log(" ");
 }
 
 function calculateChance(u, c1, c2, c3, c4, c5) {
