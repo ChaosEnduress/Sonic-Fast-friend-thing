@@ -1,45 +1,32 @@
-const RED = '\x1b[31m';
-const RESET = '\x1b[0m';
-
-let a = `                             ..,*,.                                     
-                           .,*///(/////((#%&&&&%(/,.                            
-                        ,*(((((/////////*****//(##&@@%*                         
-                    .*((((////*******////////******/(%&@&/                      
-                  *##(//*****,,,,,,,,,,******/(((/****/(#&@&/                   
-                ,##/****,,,,,,,,,..    .,  ..,*///((/*****/#&@#.                
-              .(%(***,,,,,,,,.        ./*.       .*((#(/****(#&&,               
-             *%#/**,,,,,,,            /(*,          .*(#(****/(%@(              
-           .(#/**,,,,,,,             *#/**,            *##/****/#&&,            
-           *#/**,,,,,,.             .##***,.            ,(#(****/(%&/           
-           (#/**,,,,,.             .(%(****,.            ./%#/***/(%(.          
-          ,#(**,,,,*,  ,////////////##/***************,,,,,(%(****/##,          
-         .(#/**,,***,     *(((//////(#****//////***,,,,.   *%#*****/(*          
-         ,%(********.       ./(((((///****,,,,,,,,,,.      .#%/*****//.        
-         .(#******//,          ,/((%(***,,,,,,,,,.         ./%#******/,        
-          *#/*****/#(.          /%#/,,/(*******,           ,#%(*******.        
-          .#(*****/#%*         *%#*,,,,/((*****,.          /%#/*,,***,         
-           /#/****/(##*       ,#(,,,,,,,*((/****,         .#%(*,,,,*,.          
-           .((/*****(#&(     .#(,,,,.     ./((***,       ,(%#/*,,,,,.           
-             /#/*****/#&&,   //,,.           ./(*,.     /#%#/*,,,,,,.           
-              ,#(*****/(%@&/..                  .**   ,(##(**,,,,,,             
-                /#/*****/(#&@&/                    *//#%(/*,,,,,,.              
-                 ,(#//*****/(%&@@&#/*.      ...,*//#%#(/**,,,,,.                
-                   ./#(//******//((#####(//////(##(//***,,,,,.                    
-                      .*((///////////////((((((///***,,,,,,.                       
-                          ,//(((//////////////***,,,,,,,                           
-                              .,,********,,,,,,,,,,,.                              
-                                      ....                                      
-                                            `;
-console.log(a);
-console.log("\nWelcome to the Fast Friend RSR Cost Calculator!\n");
-
-let p1 = parseFloat(prompt("Enter how many RSR an average Fast Friend costs (above 0), or enter the TOTAL % Chance you have at getting any Fast Friend (below 0: 69% = 0.69): "));
-
-if (p1 < 1 && p1 !== 0) {
-    p1 = 10 * (1 + p1);
-}
-
-console.log("\n");
+//                                     ..,*,.                                     
+//                           .,*///(/////((#%&&&&%(/,.                            
+//                        ,*(((((/////////*****//(##&@@%*                         
+//                    .*((((////*******////////******/(%&@&/                      
+//                  *##(//*****,,,,,,,,,,******/(((/****/(#&@&/                   
+//                ,##/****,,,,,,,,,..    .,  ..,*///((/*****/#&@#.                
+//              .(%(***,,,,,,,,.        ./*.       .*((#(/****(#&&,               
+//             *%#/**,,,,,,,            /(*,          .*(#(****/(%@(              
+//           .(#/**,,,,,,,             *#/**,            *##/****/#&&,            
+//           *#/**,,,,,,.             .##***,.            ,(#(****/(%&/           
+//           (#/**,,,,,.             .(%(****,.            ./%#/***/(%(.          
+//          ,#(**,,,,*,  ,////////////##/***************,,,,,(%(****/##,          
+//         .(#/**,,***,     *(((//////(#****//////***,,,,.   *%#*****/(*          
+//         ,%(********.       ./(((((///****,,,,,,,,,,.      .#%/*****//.        
+//         .(#******//,          ,/((%(***,,,,,,,,,.         ./%#******/,        
+//          *#/*****/#(.          /%#/,,/(*******,           ,#%(*******.        
+//          .#(*****/#%*         *%#*,,,,/((*****,.          /%#/*,,***,         
+//           /#/****/(##*       ,#(,,,,,,,*((/****,         .#%(*,,,,*,.          
+//           .((/*****(#&(     .#(,,,,.     ./((***,       ,(%#/*,,,,,.           
+//             /#/*****/#&&,   //,,.           ./(*,.     /#%#/*,,,,,,.           
+//              ,#(*****/(%@&/..                  .**   ,(##(**,,,,,,             
+//                /#/*****/(#&@&/                    *//#%(/*,,,,,,.              
+//                 ,(#//*****/(%&@@&#/*.      ...,*//#%#(/**,,,,,.                
+//                   ./#(//******//((#####(//////(##(//***,,,,,.                    
+//                      .*((///////////////((((((///***,,,,,,.                       
+//                          ,//(((//////////////***,,,,,,,                           
+//                              .,,********,,,,,,,,,,,.                              
+//                                      ....                                                                            
+                                            
 
 let p2 = 0;
 let p3 = 0;
@@ -58,9 +45,18 @@ const weight3 = [0.2, 0.0333, 0.02];
 const weight4 = [0.2, 0.0333, 0.02, 0.0133];
 const weight5 = [0.2, 0.0333, 0.02, 0.0133, 0.0066];
 
-function tierMatrix(u, tier, weight) {
+let petList = [];
+
+function tierMatrix(p1, percentOrRSR, tier) {
+
+    if (percentOrRSR == 1) {
+        p1 = 10 * (1 + p1/100);
+    }    
+
+    eval("weight = weight" + tier);
+    eval("u = u" + tier);
+
     let min = 999999999;
-    let petList = [];
     for (let x1 = 0; x1 < tier; x1++) {
         for (let x2 = 0; x2 < tier; x2++) {
             for (let x3 = 0; x3 < tier; x3++) {
@@ -101,6 +97,7 @@ function tierMatrix(u, tier, weight) {
             }
         }
     }
+
     if (tier === 1) {
         p2 = min;
     } else if (tier === 2) {
@@ -110,8 +107,7 @@ function tierMatrix(u, tier, weight) {
     } else if (tier === 4) {
         p5 = min;
     }
-    console.log(`To level up ${tier} star fast friends, the best price you can get them for is ${RED}${Math.round(min)}${RESET} red star rings.`);
-    console.log(`You'll need to use ${minIndex + 1} pets:`);
+    
     for (let i = 0; i < petList.length; i++) {
         console.log(`${petList[i]} star`);
     }
@@ -190,3 +186,38 @@ tierMatrix(u2, 2, weight2);
 tierMatrix(u3, 3, weight3);
 tierMatrix(u4, 4, weight4);
 tierMatrix(u5, 5, weight5);
+
+$(document).ready(function() {
+	var i = 1;
+	var length = document.querySelectorAll('.FormulaTable').length;
+	while(i <= length) {
+
+        $("span#NumBox-"+i).html('<input onClick="this.select();" type="number" value="0" class="Num oo-ui-inputWidget-input"></input>');
+        
+		$("span#TypeBox-"+i).html('<select class="Type oo-ui-dropdownWidget-handle"><option value="1">%</option><option value="2">RSR</option></select>');
+		
+		i++;
+	}
+
+    $(".calcButton").click(function() {
+    	var id = this.id.substring(5);
+
+    	var p1 = parseInt($("#NumBox-" + id + " > .Num")[0].value);
+        if(p1 < 0) {
+    		$("#NumBox-" + id +" > .Num")[0].value = 0;
+    	}
+
+    	var percentOrRSR = parseInt($("#TypeBox-" + id + " > .Type")[0].value);
+    	
+        i = 1;
+        while(i<=5){
+            tierMatrix(p1, percentOrRSR, i);
+            j = 1;
+            document.getElementById("Cost" + i + "-" + id).innerHTML = eval("p"+i+1);
+            while(j<=5){
+                document.getElementById("FFs" + i + "_" + j + "-"+id).innerHTML = petList[j];
+            }
+        }	
+    });
+    
+});
