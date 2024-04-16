@@ -55,8 +55,9 @@ function tierMatrix(p1, percentOrRSR, tier) {
     }    
 
     petList = []
-
+    let weight = [];
     eval("weight = weight" + tier);
+    let u = 0; 
     eval("u = u" + tier);
 
     let min = 999999999;
