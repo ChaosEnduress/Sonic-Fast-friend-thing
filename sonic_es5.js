@@ -1,35 +1,53 @@
+// ASCII art
+//                                     ..,*///(/////((#%&&&&%(/,.                            
+//                        ,*(((((/////////*****//(##&@@%*                         
+//                    .*((((////*******////////******/(%&@&/                      
+//                  *##(//*****,,,,,,,,,,******/(((/****/(#&@&/                   
+//                ,##/****,,,,,,,,,..    .,  ..,*///((/*****/#&@#.                
+//              .(%(***,,,,,,,,.        ./*.       .*((#(/****(#&&,               
+//             *%#/**,,,,,,,            /(*,          .*(#(****/(%@(              
+//           .(#/**,,,,,,,             *#/**,            *##/****/#&&,            
+//           *#/**,,,,,,.             .##***,.            ,(#(****/(%&/           
+//           (#/**,,,,,.             .(%(****,.            ./%#/***/(%(.          
+//          ,#(**,,,,*,  ,////////////##/***************,,,,,(%(****/##,          
+//         .(#/**,,***,     *(((//////(#****//////***,,,,.   *%#*****/(*          
+//         ,%(********.       ./(((((///****,,,,,,,,,,.      .#%/*****//.        
+//         .(#******//,          ,/((%(***,,,,,,,,,.         ./%#******/,        
+//          *#/*****/#(.          /%#/,,/(*******,           ,#%(*******.        
+//          .#(*****/#%*         *%#*,,,,/((*****,.          /%#/*,,***,         
+//           /#/****/(##*       ,#(,,,,,,,*((/****,         .#%(*,,,,*,.          
+//           .((/*****(#&(     .#(,,,,.     ./((***,       ,(%#/*,,,,,.           
+//             /#/*****/#&&,   //,,.           ./(*,.     /#%#/*,,,,,,.           
+//              ,#(*****/(%@&/..                  .**   ,(##(**,,,,,,             
+//                /#/*****/(#&@&/                    *//#%(/*,,,,,,.              
+//                 ,(#//*****/(%&@@&#/*.      ...,*//#%#(/**,,,,,.                
+//                   ./#(//******//((#####(//////(##(//***,,,,,.                    
+//                      .*((///////////////((((((///***,,,,,,.                       
+//                          ,//(((//////////////***,,,,,,,                           
+//                              .,,********,,,,,,,,,,,.                              
+//                                      ....                                                                            
 
-var p2 = 0;
-var p3 = 0;
-var p4 = 0;
-var p5 = 0;
-var p6 = 0;
+// Converted ES5 code
+// Variables
+var p_ = [0, 0, 0, 0, 0, 0];
 
-var u1 = 20;
-var u2 = 50;
-var u3 = 200;
-var u4 = 300;
-var u5 = 500;
+var u_ = [20, 50, 200, 300, 500];
 
-var weight1 = [0.2];
-var weight2 = [0.2, 0.08];
-var weight3 = [0.2, 0.0333, 0.02];
-var weight4 = [0.2, 0.0333, 0.02, 0.0133];
-var weight5 = [0.2, 0.0333, 0.02, 0.0133, 0.0066];
+var w_ = [
+    [0.2],
+    [0.2, 0.08],
+    [0.2, 0.0333, 0.02],
+    [0.2, 0.0333, 0.02, 0.0133],
+    [0.2, 0.0333, 0.02, 0.0133, 0.0066]
+  ];
 
 var petList = [];
 
 // Functions
-function tierMatrix(p1, percentOrRSR, tier) {
-    if (percentOrRSR == 1) {
-        p1 = 10 * (1 + p1 / 100);
-    }
-    petList = [];
-    var weight = [];
-    eval("weight = weight" + tier);
-    var u = 0;
-    eval("u = u" + tier);
-    var min = 999999999;
+function tierMatrix(tier) {
+    var weight = w_[tier-1];
+    var u = u_[tier-1];
+    var min = Infinity;
     for (var x1 = 0; x1 < tier; x1++) {
         for (var x2 = 0; x2 < tier; x2++) {
             for (var x3 = 0; x3 < tier; x3++) {
@@ -41,9 +59,10 @@ function tierMatrix(p1, percentOrRSR, tier) {
                         var pet4 = weight[x4];
                         var pet5 = weight[x5];
                         var prices = calculateChance(u, pet1, pet1 + pet2, pet1 + pet2 + pet3, pet1 + pet2 + pet3 + pet4, pet1 + pet2 + pet3 + pet4 + pet5);
+
                         for (var x = 0; x < prices.length; x++) {
                             var xIndex = prices.indexOf(prices[x]);
-                            prices[x] += tierOfPet(prices.indexOf(prices[x]), tier, x1, x2, x3, x4, x5) + returnPrice(0, tier);
+                            prices[x] += tierOfPet(xIndex, tier, x1, x2, x3, x4, x5) + p_[tier-1];
                             if (prices[x] < min) {
                                 petList = [];
                                 min = prices[x];
@@ -70,48 +89,24 @@ function tierMatrix(p1, percentOrRSR, tier) {
             }
         }
     }
-    if (tier === 1) {
-        p2 = min;
-    } else if (tier === 2) {
-        p3 = min;
-    } else if (tier === 3) {
-        p4 = min;
-    } else if (tier === 4) {
-        p5 = min;
-    } else if (tier === 5) {
-        p6 = min;
-    }
+
+    p_[tier] = Math.round(min);
+
 }
 
 function calculateChance(u, c1, c2, c3, c4, c5) {
-    var a5 = u;
-    var a4 = u;
-    var a3 = u;
-    var a2 = u;
-    var a1 = u;
-    var s5 = u;
-    var s4 = u;
-    var s3 = u;
-    var s2 = u;
-    var s1 = u;
+    var a = [u, u, u, u, u];
+    var s = [u, u, u, u, u];
+    var c = [c1, c2, c3, c4, c5]
+    
     for (var i = 0; i < 100; i++) {
-        // 5 pets
-        a5 *= 1.0 - c5;
-        s5 += a5;
-        // 4 pets
-        a4 *= 1.0 - c4;
-        s4 += a4;
-        // 3 pets
-        a3 *= 1.0 - c3;
-        s3 += a3;
-        // 2 pets
-        a2 *= 1.0 - c2;
-        s2 += a2;
-        // 1 pets
-        a1 *= 1.0 - c1;
-        s1 += a1;
+      for (var j = 0; j < 5; j++) {
+        a[j] *= 1.0 - c[j];
+        s[j] += a[j];
+      }
     }
-    return [s1, s2, s3, s4, s5];
+    
+    return s;
 }
 
 function tierOfPet(x, tier, x1, x2, x3, x4, x5) {
@@ -133,25 +128,12 @@ function tierOfPet(x, tier, x1, x2, x3, x4, x5) {
 }
 
 function returnPrice(x, tier) {
-    if (tier - x === 1) {
-        return p1;
-    }
-    if (tier - x === 2) {
-        return p2;
-    }
-    if (tier - x === 3) {
-        return p3;
-    }
-    if (tier - x === 4) {
-        return p4;
-    }
-    if (tier - x === 5) {
-        return p5;
-    }
+    return p_[tier-x-1]
 }
 
 // jQuery ready function
 $(document).ready(function() {
+    // Your code here
     var i = 1;
     var length = document.querySelectorAll('.FormulaTable').length;
     while (i <= length) {
@@ -159,18 +141,28 @@ $(document).ready(function() {
         $("span#TypeBox-" + i).html('<select class="Type oo-ui-dropdownWidget-handle"><option value="1">%</option><option value="2">RSR</option></select>');
         i++;
     }
-    $(".calcButton").click(function() {
+    $(".calcFFRSR").click(function() {
         var id = this.id.substring(5);
-        var p1 = parseInt($("#NumBox-" + id + " > .Num")[0].value);
-        if (p1 < 0) {
-            $("#NumBox-" + id + " > .Num")[0].value = 0;
+        p_ = [0, 0, 0, 0, 0, 0];
+        petList = [];
+
+        p_[0] = parseInt($("#NumBox-" + id + " > input").val());
+        if (p_[0] < 0) {
+            $("#NumBox-" + id + " > input")[0].value = 0;
+            p_[0] = 0;
         }
-        var percentOrRSR = parseInt($("#TypeBox-" + id + " > .Type")[0].value);
+
+        var percentOrRSR = parseInt($("#TypeBox-" + id + " > select").val());
+        if (percentOrRSR == 1) {
+            p_[0] = 10 * (1 + p_[0] / 100);
+        }
+
+
         i = 1;
         while (i <= 5) {
-            tierMatrix(p1, percentOrRSR, i);
+            tierMatrix(i);
             var j = 1;
-            document.getElementById("Cost" + i + "-" + id).innerHTML = eval("p" + (i + 1));
+            document.getElementById("Cost" + i + "-" + id).innerHTML = p_[i];
             while (j <= 5) {
                 document.getElementById("FFs" + i + "_" + j + "-" + id).innerHTML = petList[j - 1];
                 j++;
