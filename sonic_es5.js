@@ -53,34 +53,36 @@ function tierMatrix(tier) {
             for (var x3 = 0; x3 < tier; x3++) {
                 for (var x4 = 0; x4 < tier; x4++) {
                     for (var x5 = 0; x5 < tier; x5++) {
-                        var pet1 = weight[x1];
-                        var pet2 = weight[x2];
-                        var pet3 = weight[x3];
-                        var pet4 = weight[x4];
-                        var pet5 = weight[x5];
-                        var prices = calculateChance(u, pet1, pet1 + pet2, pet1 + pet2 + pet3, pet1 + pet2 + pet3 + pet4, pet1 + pet2 + pet3 + pet4 + pet5);
 
-                        for (var x = 0; x < prices.length; x++) {
-                            var xIndex = prices.indexOf(prices[x]);
-                            prices[x] += tierOfPet(xIndex, tier, x1, x2, x3, x4, x5) + p_[tier-1];
+                        var petTier = [tier - x1, tier - x2, tier - x3, tier - x4, tier - x5];
+                        var petWeight = [weight[x1], weight[x2], weight[x3], weight[x4], weight[x5]]
+
+                        var sumTier = 0;
+                        var sumWeight = 0;
+
+                        var priceTier = [];
+                        var priceWeight = [];
+
+                        for(var i = 0; i < 5; i++){
+                            sumWeight += petWeight[i];
+                            priceWeight.push(sumWeight);
+                            sumTier += p_[petTier[i] - 1];
+                            priceTier.push(sumTier);
+                        }
+
+                        var prices = [];
+    
+                        for (var i = 0; i < 5; i++) {
+                            prices[i] = (u + priceTier[i]) / priceWeight[i] + p_[tier-1];
+                        }
+
+                        for (var x = 0; x < 5; x++) {
                             if (prices[x] < min) {
-                                petList = [];
+
                                 min = prices[x];
-                                var minIndex = xIndex;
-                                if (minIndex >= 0) {
-                                    petList.push(tier - x1);
-                                }
-                                if (minIndex >= 1) {
-                                    petList.push(tier - x2);
-                                }
-                                if (minIndex >= 2) {
-                                    petList.push(tier - x3);
-                                }
-                                if (minIndex >= 3) {
-                                    petList.push(tier - x4);
-                                }
-                                if (minIndex >= 4) {
-                                    petList.push(tier - x5);
+                                petList = [];
+                                for(var i = 0; i <= x; i++){
+                                    petList.push(petTier[i]);
                                 }
                             }
                         }
@@ -94,16 +96,12 @@ function tierMatrix(tier) {
 
 }
 
-function calculateChance(u, c1, c2, c3, c4, c5) {
-    var a = [u, u, u, u, u];
+function calculateChance(u, x, c1, c2, c3, c4, c5) {
     var s = [u, u, u, u, u];
     var c = [c1, c2, c3, c4, c5]
     
-    for (var i = 0; i < 100; i++) {
-      for (var j = 0; j < 5; j++) {
-        a[j] *= 1.0 - c[j];
-        s[j] += a[j];
-      }
+    for (var j = 0; j < 5; j++) {
+        s[j] / c[j]
     }
     
     return s;
@@ -154,17 +152,38 @@ $(document).ready(function() {
 
         var percentOrRSR = parseInt($("#TypeBox-" + id + " > select").val());
         if (percentOrRSR == 1) {
-            p_[0] = 10 * (1 + p_[0] / 100);
+            if (p_[0] < 30) {
+                p_[0] *= 3;
+            }
+            p_[0] = 10 / (p_[0] / 100);
         }
-
 
         i = 1;
         while (i <= 5) {
             tierMatrix(i);
             var j = 1;
-            document.getElementById("Cost" + i + "-" + id).innerHTML = p_[i];
+            document.getElementById("Cost" + i + "-" + id).innerHTML = p_[i] + " RSR";
             while (j <= 5) {
-                document.getElementById("FFs" + i + "_" + j + "-" + id).innerHTML = petList[j - 1];
+                var pet = petList[j-1]
+                var active = document.getElementById("FFs" + i + "_" + j + "-" + id)
+                if (pet !== undefined){
+                    if (pet === 1){
+                        active.style.cssText = "color: white; ";
+                    }
+                    if (pet === 2){
+                        active.style.cssText = "color: green; ";
+                    }
+                    if (pet === 3){
+                        active.style.cssText = "color: dodgerblue; ";
+                    }
+                    if (pet === 4){
+                        active.style.cssText = "color: blueviolet; ";
+                    }
+                    if (pet === 5){
+                        active.style.cssText = "color: orange; ";
+                    }
+                    active.innerHTML = petList[j - 1] + " star";
+                }
                 j++;
             }
             i++;
