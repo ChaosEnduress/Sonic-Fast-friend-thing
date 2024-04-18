@@ -55,7 +55,7 @@ function tierMatrix(tier) {
                     for (var x5 = 0; x5 < tier; x5++) {
 
                         var petTier = [tier - x1, tier - x2, tier - x3, tier - x4, tier - x5];
-                        var petWeight = [weight[x1], weight[x2], weight[x3], weight[x4], weight[x5]]
+                        var petWeight = [weight[x1], weight[x2], weight[x3], weight[x4], weight[x5]];
 
                         var sumTier = 0;
                         var sumWeight = 0;
@@ -72,8 +72,8 @@ function tierMatrix(tier) {
 
                         var prices = [];
     
-                        for (var i = 0; i < 5; i++) {
-                            prices[i] = (u + priceTier[i]) / priceWeight[i] + p_[tier-1];
+                        for (i = 0; i < 5; i++) {
+                            prices[i] = (u / priceWeight[i]) + p_[tier-1] + priceTier[i];
                         }
 
                         for (var x = 0; x < 5; x++) {
@@ -81,7 +81,7 @@ function tierMatrix(tier) {
 
                                 min = prices[x];
                                 petList = [];
-                                for(var i = 0; i <= x; i++){
+                                for(i = 0; i <= x; i++){
                                     petList.push(petTier[i]);
                                 }
                             }
@@ -96,43 +96,10 @@ function tierMatrix(tier) {
 
 }
 
-function calculateChance(u, x, c1, c2, c3, c4, c5) {
-    var s = [u, u, u, u, u];
-    var c = [c1, c2, c3, c4, c5]
-    
-    for (var j = 0; j < 5; j++) {
-        s[j] / c[j]
-    }
-    
-    return s;
-}
-
-function tierOfPet(x, tier, x1, x2, x3, x4, x5) {
-    if (x === 0) {
-        return returnPrice(x1, tier);
-    }
-    if (x === 1) {
-        return returnPrice(x1, tier) + returnPrice(x2, tier);
-    }
-    if (x === 2) {
-        return returnPrice(x1, tier) + returnPrice(x2, tier) + returnPrice(x3, tier);
-    }
-    if (x === 3) {
-        return returnPrice(x1, tier) + returnPrice(x2, tier) + returnPrice(x3, tier) + returnPrice(x4, tier);
-    }
-    if (x === 4) {
-        return returnPrice(x1, tier) + returnPrice(x2, tier) + returnPrice(x3, tier) + returnPrice(x4, tier) + returnPrice(x5, tier);
-    }
-}
-
-function returnPrice(x, tier) {
-    return p_[tier-x-1]
-}
-
 $(document).ready(function() {
 
     var i = 1;
-    var length = document.querySelectorAll('.FormulaTable').length;
+    var length = document.querySelectorAll('.FFRSRcalculator').length;
 
     while (i <= length) {
         $("span#NumBox-" + i).html('<input onClick="this.select();" type="number" value="0" style="text-shadow: 2px 2px 2px black; border: 5px solid #48526B; border-radius: 5px; background-color: #48526B; color: white; width: 100px font-weight: bold;"></input>');
@@ -141,6 +108,7 @@ $(document).ready(function() {
     }
     $(".calcFFRSR").click(function() {
         var id = this.id.substring(5);
+        console.log(id);
         p_ = [0, 0, 0, 0, 0, 0];
         petList = [];
 
@@ -155,7 +123,7 @@ $(document).ready(function() {
             if (p_[0] < 30) {
                 p_[0] *= 3;
             }
-            p_[0] = 10 / (p_[0] / 100);
+            p_[0] = Math.round(10 / (p_[0] / 100));
         }
 
         document.getElementById("BaseCost-" + id).innerHTML = p_[0] + " RSR";
@@ -166,8 +134,8 @@ $(document).ready(function() {
             var j = 1;
             document.getElementById("Cost" + i + "-" + id).innerHTML = p_[i] + " RSR";
             while (j <= 5) {
-                var pet = petList[j-1]
-                var active = document.getElementById("FFs" + i + "_" + j + "-" + id)
+                var pet = petList[j-1];
+                var active = document.getElementById("FFs" + i + "_" + j + "-" + id);
                 if (pet !== undefined){
                     if (pet === 1){
                         active.style.cssText = "color: white; ";
