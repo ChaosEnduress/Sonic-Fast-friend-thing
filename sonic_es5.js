@@ -129,14 +129,14 @@ function returnPrice(x, tier) {
     return p_[tier-x-1]
 }
 
-// jQuery ready function
 $(document).ready(function() {
-    // Your code here
+
     var i = 1;
     var length = document.querySelectorAll('.FormulaTable').length;
+
     while (i <= length) {
-        $("span#NumBox-" + i).html('<input onClick="this.select();" type="number" value="0" class="Num oo-ui-inputWidget-input"></input>');
-        $("span#TypeBox-" + i).html('<select class="Type oo-ui-dropdownWidget-handle"><option value="1">%</option><option value="2">RSR</option></select>');
+        $("span#NumBox-" + i).html('<input onClick="this.select();" type="number" value="0" style="text-shadow: 2px 2px 2px black; border: 5px solid #48526B; border-radius: 5px; background-color: #48526B; color: white; width: 100px font-weight: bold;"></input>');
+        $("span#TypeBox-" + i).html('<select style="text-shadow: 2px 2px 2px black; border: 5px solid #48526B; border-radius: 5px; background-color: #48526B; color: white; font-weight: bold;"><option value="1">%</option><option value="2">RSR</option></select>');
         i++;
     }
     $(".calcFFRSR").click(function() {
@@ -157,6 +157,8 @@ $(document).ready(function() {
             }
             p_[0] = 10 / (p_[0] / 100);
         }
+
+        document.getElementById("BaseCost-" + id).innerHTML = p_[0] + " RSR";
 
         i = 1;
         while (i <= 5) {
