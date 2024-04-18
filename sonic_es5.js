@@ -31,7 +31,7 @@ var p_ = [0, 0, 0, 0, 0, 0];
 
 var u_ = [20, 50, 200, 300, 500];
 
-var w_ = [
+var c_ = [
     [0.2],
     [0.2, 0.08],
     [0.2, 0.0333, 0.02],
@@ -40,9 +40,10 @@ var w_ = [
   ];
 
 var petList = [];
+var bestChance = 0;
 
 function tierMatrix(tier) {
-    var weight = w_[tier-1];
+    var chance = c_[tier-1];
     var u = u_[tier-1];
     var min = Infinity;
     for (var x1 = 0; x1 < tier; x1++) {
@@ -52,17 +53,17 @@ function tierMatrix(tier) {
                     for (var x5 = 0; x5 < tier; x5++) {
 
                         var petTier = [tier - x1, tier - x2, tier - x3, tier - x4, tier - x5];
-                        var petWeight = [weight[x1], weight[x2], weight[x3], weight[x4], weight[x5]];
+                        var petChance = [chance[x1], chance[x2], chance[x3], chance[x4], chance[x5]];
 
                         var sumTier = 0;
-                        var sumWeight = 0;
+                        var sumChance = 0;
 
                         var priceTier = [];
-                        var priceWeight = [];
+                        var priceChance = [];
 
                         for(var i = 0; i < 5; i++){
-                            sumWeight += petWeight[i];
-                            priceWeight.push(sumWeight);
+                            sumChance += petChance[i];
+                            priceChance.push(sumChance);
                             sumTier += p_[petTier[i] - 1];
                             priceTier.push(sumTier);
                         }
@@ -70,13 +71,14 @@ function tierMatrix(tier) {
                         var prices = [];
     
                         for (i = 0; i < 5; i++) {
-                            prices[i] = (u / priceWeight[i]) + p_[tier-1] + priceTier[i];
+                            prices[i] = (u / priceChance[i]) + p_[tier-1] + priceTier[i];
                         }
 
                         for (var x = 0; x < 5; x++) {
                             if (prices[x] < min) {
 
                                 min = prices[x];
+                                bestChance = priceChance[x]*100;
                                 petList = [];
 
                                 for(i = 0; i <= x; i++){
@@ -101,7 +103,7 @@ $(document).ready(function() {
     var length = document.querySelectorAll('.FFRSRcalculator').length;
 
     while (i <= length) {
-        $("span#NumBox-" + i).html('<input onClick="this.select();" type="number" value="0" style="text-shadow: 2px 2px 2px black; border: 5px solid #48526B; border-radius: 5px; background-color: #48526B; color: white; width: 100px font-weight: bold;"></input>');
+        $("span#NumBox-" + i).html('<input onClick="this.select();" type="number" value="0" style="text-shadow: 2px 2px 2px black; border: 5px solid #48526B; border-radius: 5px; background-color: #48526B; color: white; max-width: 100px font-weight: bold;"></input>');
         $("span#TypeBox-" + i).html('<select style="text-shadow: 2px 2px 2px black; border: 5px solid #48526B; border-radius: 5px; background-color: #48526B; color: white; font-weight: bold;"><option value="1">%</option><option value="2">RSR</option></select>');
         i++;
     }
@@ -132,6 +134,7 @@ $(document).ready(function() {
             tierMatrix(i);
             var j = 1;
             document.getElementById("Cost" + i + "-" + id).innerHTML = p_[i] + " RSR";
+            document.getElementById("Chance" + i + "-" + id).innerHTML = parseFloat(bestChance.toFixed(2));
             while (j <= 5) {
                 var pet = petList[j-1];
                 var active = document.getElementById("FFs" + i + "_" + j + "-" + id);
