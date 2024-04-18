@@ -1,5 +1,5 @@
-// ASCII art
-//                                     ..,*///(/////((#%&&&&%(/,.                            
+//                                    ..,*,. 
+//                           .,*///(/////((#%&&&&%(/,.                            
 //                        ,*(((((/////////*****//(##&@@%*                         
 //                    .*((((////*******////////******/(%&@&/                      
 //                  *##(//*****,,,,,,,,,,******/(((/****/(#&@&/                   
@@ -27,8 +27,6 @@
 //                              .,,********,,,,,,,,,,,.                              
 //                                      ....                                                                            
 
-// Converted ES5 code
-// Variables
 var p_ = [0, 0, 0, 0, 0, 0];
 
 var u_ = [20, 50, 200, 300, 500];
@@ -43,7 +41,6 @@ var w_ = [
 
 var petList = [];
 
-// Functions
 function tierMatrix(tier) {
     var weight = w_[tier-1];
     var u = u_[tier-1];
@@ -81,11 +78,13 @@ function tierMatrix(tier) {
 
                                 min = prices[x];
                                 petList = [];
+
                                 for(i = 0; i <= x; i++){
                                     petList.push(petTier[i]);
                                 }
                             }
                         }
+
                     }
                 }
             }
@@ -153,6 +152,9 @@ $(document).ready(function() {
                         active.style.cssText = "color: orange; ";
                     }
                     active.innerHTML = petList[j - 1] + " star";
+                }
+                else {
+                    active.innerHTML = "-";
                 }
                 j++;
             }
